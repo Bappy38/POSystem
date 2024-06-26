@@ -4,6 +4,7 @@ using POSystem.Application.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using POSystem.API.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,11 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication()
     .AddPresentation();
+
+builder.Host.UseSerilog((context, config) =>
+{
+    config.ReadFrom.Configuration((context.Configuration));
+});
 
 var app = builder.Build();
 
@@ -37,5 +43,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 });
 
 app.UseExceptionHandler();
+
+app.UseSerilogRequestLogging();
 
 app.Run();
