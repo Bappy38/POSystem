@@ -18,25 +18,52 @@ CREATE PROCEDURE spGetOrderByIdWithLineItems
 AS
 BEGIN
     SELECT 
-        o.Id AS OrderId,
+        o.Id,
         o.ReferenceId,
         o.PlacedAtUtc,
         o.ExpectedDate,
         o.Remark,
-        s.Id AS SupplierId,
-        s.Name AS SupplierName,
-        s.Email AS SupplierEmail,
-        s.Phone AS SupplierPhone,
-        s.Address AS SupplierAddress,
+        o.SupplierId,
         li.Id AS LineItemId,
-        li.Name AS ItemName,
+        li.OrderId,
+        li.Name,
         li.Quantity,
         li.Rate
     FROM Orders o
-    INNER JOIN Suppliers s ON o.SupplierId = s.Id
-    LEFT JOIN LineItems li ON o.Id = li.OrderId
+    INNER JOIN LineItems li ON o.Id = li.OrderId
     WHERE o.Id = @OrderId;
 END;
+GO
+
+CREATE PROCEDURE spGetPagedOrders
+    @CursorId INT = NULL,
+    @PageSize INT,
+    @Search NVARCHAR(50) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP (@PageSize)
+        Id,
+        ReferenceId,
+        PlacedAtUtc,
+        SupplierId,
+        ExpectedDate,
+        Remark
+    FROM Orders
+    WHERE (@CursorId IS NULL OR Id > @CursorId)
+      AND (@Search IS NULL OR ReferenceId LIKE '%' + @Search + '%')
+    ORDER BY Id;
+END;
+GO
+
+
+CREATE TYPE dbo.AddLineItemType AS TABLE
+(
+    Name NVARCHAR(255),
+    Quantity INT,
+    Rate DECIMAL(18, 2)
+);
 GO
 
 CREATE PROCEDURE spAddOrder
@@ -44,17 +71,34 @@ CREATE PROCEDURE spAddOrder
     @PlacedAtUtc DATETIME,
     @SupplierId INT,
     @ExpectedDate DATETIME = NULL,
-    @Remark NVARCHAR(MAX) = NULL
+    @Remark NVARCHAR(MAX) = NULL,
+    @LineItems dbo.AddLineItemType READONLY
 AS
 BEGIN
-    INSERT INTO Orders
-        (ReferenceId, PlacedAtUtc, SupplierId, ExpectedDate, Remark)
-    VALUES
-        (@ReferenceId, @PlacedAtUtc, @SupplierId, @ExpectedDate, @Remark);
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        INSERT INTO Orders (ReferenceId, PlacedAtUtc, SupplierId, ExpectedDate, Remark)
+        VALUES (@ReferenceId, @PlacedAtUtc, @SupplierId, @ExpectedDate, @Remark);
+
+        DECLARE @OrderId INT;
+        SET @OrderId = SCOPE_IDENTITY();
+
+        INSERT INTO LineItems (OrderId, Name, Quantity, Rate)
+        SELECT @OrderId, Name, Quantity, Rate
+        FROM @LineItems;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+
+        THROW;
+    END CATCH;
 END;
 GO
 
-CREATE TYPE dbo.LineItemType AS TABLE
+CREATE TYPE dbo.UpdateLineItemType AS TABLE
 (
     Id INT,
     OrderId INT,
@@ -71,7 +115,7 @@ CREATE PROCEDURE spUpdateOrder
     @SupplierId INT,
     @ExpectedDate DATETIME = NULL,
     @Remark NVARCHAR(MAX) = NULL,
-    @LineItems dbo.LineItemType READONLY
+    @LineItems dbo.UpdateLineItemType READONLY
 AS
 BEGIN
     BEGIN TRANSACTION;
@@ -88,8 +132,8 @@ BEGIN
 
         DELETE FROM LineItems WHERE OrderId = @OrderId;
 
-        INSERT INTO LineItems (Id, OrderId, Name, Quantity, Rate)
-        SELECT Id, OrderId, Name, Quantity, Rate
+        INSERT INTO LineItems (OrderId, Name, Quantity, Rate)
+        SELECT OrderId, Name, Quantity, Rate
         FROM @LineItems;
 
         COMMIT TRANSACTION;
