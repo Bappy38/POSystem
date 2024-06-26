@@ -7,7 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Scripts\01_create_tables_2024_06_2601.sql" />
+    <None Remove="Data\Scripts\02_SeedSuppliers__2024_06_2601.sql" />
+    <None Remove="Data\Scripts\03_SeedOrders__2024_06_2601.sql" />
+    <None Remove="Data\Scripts\04_SeedLineItems_2024_06_2601.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Scripts\01_create_tables_2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\04_SeedLineItems_2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\03_SeedOrders__2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\02_SeedSuppliers__2024_06_2601.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="dbup" Version="5.0.40" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
   </ItemGroup>
