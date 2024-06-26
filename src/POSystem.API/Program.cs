@@ -3,6 +3,7 @@ using POSystem.Infrastructure.Extenstions;
 using POSystem.Application.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
+using POSystem.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication()
-    .AddControllers();
+    .AddPresentation();
 
 var app = builder.Build();
 
@@ -34,5 +35,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
     Predicate = _ => true,
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
+app.UseExceptionHandler();
 
 app.Run();
