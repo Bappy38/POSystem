@@ -2,7 +2,7 @@
 
 - Write Stored Procedures and Test those in SSMS (DONE)
 - Implement endpoints (DONE)
-- Health Check Endpoint
+- Health Check Endpoint (DONE)
 - Global Exception Handler
 - Validation
 - Logger
