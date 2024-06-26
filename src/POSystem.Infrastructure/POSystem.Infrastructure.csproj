@@ -8,16 +8,21 @@
 
   <ItemGroup>
     <None Remove="Data\Scripts\01_create_tables_2024_06_2601.sql" />
-    <None Remove="Data\Scripts\02_SeedSuppliers__2024_06_2601.sql" />
-    <None Remove="Data\Scripts\03_SeedOrders__2024_06_2601.sql" />
-    <None Remove="Data\Scripts\04_SeedLineItems_2024_06_2601.sql" />
+    <None Remove="Data\Scripts\02_stored_procedures_2024_06_2601.sql" />
+    <None Remove="Data\Scripts\03_SeedSuppliers__2024_06_2601.sql" />
+    <None Remove="Data\Scripts\04_SeedOrders__2024_06_2601.sql" />
+    <None Remove="Data\Scripts\05_SeedLineItems_2024_06_2601.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Scripts\02_stored_procedures_2024_06_2601.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\Scripts\01_create_tables_2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\04_SeedLineItems_2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\03_SeedOrders__2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\02_SeedSuppliers__2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\05_SeedLineItems_2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\04_SeedOrders__2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\03_SeedSuppliers__2024_06_2601.sql" />
   </ItemGroup>
 
   <ItemGroup>

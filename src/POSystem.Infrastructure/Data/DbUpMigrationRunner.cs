@@ -3,7 +3,6 @@ using DbUp;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using POSystem.Domain.Constants;
-using POSystem.Infrastructure.Extenstions;
 
 namespace POSystem.Infrastructure.Data;
 
@@ -19,7 +18,8 @@ public class DbUpMigrationRunner
 
         var upgrader = DeployChanges.To
             .SqlDatabase(connectionString)
-            .WithScriptsEmbeddedInAssembly(typeof(DependencyInjection).Assembly)
+            .WithScriptsEmbeddedInAssembly(typeof(DbContext).Assembly)
+            .WithVariable("GO", "GO")
             .LogToConsole()
             .Build();
 

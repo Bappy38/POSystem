@@ -1,6 +1,6 @@
 DECLARE @OrderId1 INT, @OrderId2 INT;
-SELECT @OrderId1 = Id FROM Orders WHERE ReferenceId = 'ORDER001';
-SELECT @OrderId2 = Id FROM Orders WHERE ReferenceId = 'ORDER002';
+SELECT @OrderId1 = Id FROM Orders WHERE ReferenceId = '001';
+SELECT @OrderId2 = Id FROM Orders WHERE ReferenceId = '002';
 
 INSERT INTO LineItems (OrderId, Name, Quantity, Rate)
 VALUES
