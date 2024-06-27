@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POSystem.Application.DTOs;
 using POSystem.Application.Interfaces;
-using POSystem.Domain.DTOs;
 
 namespace POSystem.API.Controllers;
 
@@ -39,15 +39,27 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] OrderDto order)
+    public async Task<IActionResult> Create([FromBody] CreateOrderDto order)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var numberOfAffectedRows = await _orderService.CreateAsync(order);
         return numberOfAffectedRows > 0 ? Created() : BadRequest();
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] OrderDto order)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateOrderDto order)
     {
+        order.Id = id;
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var numberOfAffectedRows = await _orderService.UpdateAsync(order);
         return numberOfAffectedRows > 0 ? NoContent() : BadRequest();
     }

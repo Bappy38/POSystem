@@ -6,5 +6,6 @@
 - Global Exception Handler (DONE)
 - Logger (DONE)
 - Implement API to fetch all suppliers (DONE)
-- Validation
+- Validation (DONE). Need to integrate library like Fluent Validation as Default Validation doesn't work
+- Implement Search Functionality Once the UI get Ready
 - Architecture Test

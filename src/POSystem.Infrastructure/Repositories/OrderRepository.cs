@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 using POSystem.Domain.Repositories;
 using POSystem.Infrastructure.Data;
@@ -16,7 +15,7 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task<int> CreateAsync(OrderDto order)
+    public async Task<int> CreateAsync(Order order)
     {
         using (var connection = _context.CreateConnection())
         {
@@ -53,22 +52,22 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OrderDto> GetByIdAsync(int id)
+    public async Task<Order> GetByIdAsync(int id)
     {
         using (var connection = _context.CreateConnection())
         {
-            var orderDictionary = new Dictionary<int, OrderDto>();
+            var orderDictionary = new Dictionary<int, Order>();
 
-            var result = await connection.QueryAsync<OrderDto, LineItemDto, OrderDto>(
+            var result = await connection.QueryAsync<Order, LineItem, Order>(
                 "spGetOrderByIdWithLineItems",
                 (order, lineItem) =>
                 {
-                    OrderDto orderEntry;
+                    Order orderEntry;
 
                     if (!orderDictionary.TryGetValue(order.Id, out orderEntry))
                     {
                         orderEntry = order;
-                        orderEntry.Items = new List<LineItemDto>();
+                        orderEntry.Items = new List<LineItem>();
                         orderDictionary.Add(orderEntry.Id, orderEntry);
                     }
 
@@ -104,12 +103,11 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<int> UpdateAsync(OrderDto order)
+    public async Task<int> UpdateAsync(Order order)
     {
         using (var connection = _context.CreateConnection())
         {
             var lineItemsDataTable = new DataTable();
-            lineItemsDataTable.Columns.Add("Id", typeof(int));
             lineItemsDataTable.Columns.Add("OrderId", typeof(int));
             lineItemsDataTable.Columns.Add("Name", typeof(string));
             lineItemsDataTable.Columns.Add("Quantity", typeof(int));
@@ -117,7 +115,7 @@ public class OrderRepository : IOrderRepository
 
             foreach (var item in order.Items)
             {
-                lineItemsDataTable.Rows.Add(item.LineItemId, order.Id, item.Name, item.Quantity, item.Rate);
+                lineItemsDataTable.Rows.Add(order.Id, item.Name, item.Quantity, item.Rate);
             }
 
             var parameters = new DynamicParameters();

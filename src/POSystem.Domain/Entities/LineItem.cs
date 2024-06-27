@@ -2,9 +2,9 @@
 
 public class LineItem
 {
-    public int Id { get; set; }
+    public int LineItemId { get; set; }
     public int OrderId { get; set; }
-    public int Name { get; set; }
+    public string Name { get; set; }
     public int Quantity { get; set; }
     public decimal Rate { get; set; }
 }

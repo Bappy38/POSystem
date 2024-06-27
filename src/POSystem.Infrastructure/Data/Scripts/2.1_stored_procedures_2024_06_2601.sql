@@ -100,7 +100,6 @@ GO
 
 CREATE TYPE dbo.UpdateLineItemType AS TABLE
 (
-    Id INT,
     OrderId INT,
     Name NVARCHAR(255),
     Quantity INT,
