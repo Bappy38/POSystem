@@ -7,6 +7,7 @@ namespace POSystem.Application.Services;
 
 public class OrderService : IOrderService
 {
+    private const int MAX_PAGE_SIZE = 10;
     private readonly IOrderRepository orderRepository;
 
     public OrderService(IOrderRepository orderRepository)
@@ -31,7 +32,7 @@ public class OrderService : IOrderService
 
     public async Task<List<Order>> GetPagedAsync(int cursor, int pageSize)
     {
-        return await orderRepository.GetPagedAsync(cursor, pageSize);
+        return await orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
     }
 
     public async Task<int> UpdateAsync(OrderDto order)

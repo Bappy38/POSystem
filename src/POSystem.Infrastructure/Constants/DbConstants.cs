@@ -1,4 +1,4 @@
-﻿namespace POSystem.Domain.Constants;
+﻿namespace POSystem.Infrastructure.Constants;
 
 public class DbConstants
 {

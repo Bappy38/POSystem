@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using POSystem.Domain.Constants;
 using POSystem.Domain.Repositories;
+using POSystem.Infrastructure.Constants;
 using POSystem.Infrastructure.Data;
 using POSystem.Infrastructure.Repositories;
 

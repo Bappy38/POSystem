@@ -5,6 +5,6 @@
 - Health Check Endpoint (DONE)
 - Global Exception Handler (DONE)
 - Logger (DONE)
-- Implement API to fetch all suppliers
+- Implement API to fetch all suppliers (DONE)
 - Validation
 - Architecture Test

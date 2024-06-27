@@ -2,7 +2,7 @@
 using DbUp;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using POSystem.Domain.Constants;
+using POSystem.Infrastructure.Constants;
 
 namespace POSystem.Infrastructure.Data;
 

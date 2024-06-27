@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using POSystem.Domain.Constants;
+using POSystem.Infrastructure.Constants;
 using System.Data;
 
 namespace POSystem.Infrastructure.Data;
