@@ -13,7 +13,9 @@ public static class ServiceRegistration
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<DbContext>();
+
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
 
         services
             .AddHealthChecks()

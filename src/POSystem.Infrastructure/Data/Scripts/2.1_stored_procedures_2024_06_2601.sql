@@ -153,3 +153,10 @@ BEGIN
     DELETE FROM Orders WHERE Id = @OrderId;
 END;
 GO
+
+CREATE PROCEDURE spGetSuppliers
+AS
+BEGIN
+    SELECT * FROM Suppliers;
+END;
+GO
