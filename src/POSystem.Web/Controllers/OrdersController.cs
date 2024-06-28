@@ -18,5 +18,32 @@ public class OrdersController : Controller
     {
         var orders = await _orderService.GetPagedAsync(0, 10);
         return View(orders);
-    }   
+    }
+
+    public ActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Create(CreateOrderDto order)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(order);
+        }
+
+        var result = await _orderService.CreateAsync(order);
+
+        var notificationType = result ? Notification.Success : Notification.Error;
+        var notificationMessage = result
+            ?
+            OrderNotifications.CreatedSuccessfully
+            :
+            OrderNotifications.FailedToCreate;
+        TempData[notificationType] = notificationMessage;
+
+        return RedirectToAction("Index");
+    }
 }

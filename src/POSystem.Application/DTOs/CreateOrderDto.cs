@@ -18,7 +18,7 @@ public class CreateOrderDto : IValidatableObject
     public string Remark { get; init; }
 
     [Required]
-    public List<CreateLineItemDto> Items { get; init; }
+    public List<CreateLineItemDto> Items { get; init; } = new();
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
