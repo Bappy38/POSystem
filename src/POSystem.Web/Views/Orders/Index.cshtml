@@ -5,11 +5,24 @@
 }
 
 <div class="container">
-    <div class="mt-3">
-        <h3 class="text-center">ORDER LIST</h3>
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
+    <h3 class="text-center pt-4">ORDER LIST</h3>
+    <div class="row pt-2">
+        <div class="col-8">
+            <a asp-controller="Orders" asp-action="Create" class="btn btn-primary fw-semibold">
+                Create
+                &nbsp;
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        </div>
+        
+        <div class="col-4 text-end">
+            <form class="d-flex">
+                <input class="form-control me-sm-2" type="search" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="pt-4">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -42,7 +55,7 @@
             <tbody>
                 @foreach (var order in Model)
                 {
-                    <tr>
+                    <tr class="table-primary">
                         <td>
                             @Html.DisplayFor(modelItem => order.ReferenceId)
                         </td>
@@ -59,13 +72,13 @@
                             @Html.DisplayFor(modelItem => order.ExpectedDate)
                         </td>
                         <td>
-                            EDIT ICON
+                            <i class="bi bi-pencil-square"></i>
                         </td>
                         <td>
-                            DELETE ICON
+                            <i class="bi bi-trash3"></i>
                         </td>
                         <td>
-                            EXPORT ICON
+                            <i class="bi bi-box-arrow-in-down"></i>
                         </td>
                     </tr>
                 }
