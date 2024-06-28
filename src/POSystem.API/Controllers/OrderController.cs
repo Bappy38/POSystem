@@ -46,8 +46,8 @@ public class OrderController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var numberOfAffectedRows = await _orderService.CreateAsync(order);
-        return numberOfAffectedRows > 0 ? Created() : BadRequest();
+        var result = await _orderService.CreateAsync(order);
+        return result ? Created() : BadRequest();
     }
 
     [HttpPut("{id}")]
@@ -60,14 +60,14 @@ public class OrderController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var numberOfAffectedRows = await _orderService.UpdateAsync(order);
-        return numberOfAffectedRows > 0 ? NoContent() : BadRequest();
+        var result = await _orderService.UpdateAsync(order);
+        return result ? NoContent() : BadRequest();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var numberOfAffectedRows = await _orderService.DeleteAsync(id);
-        return numberOfAffectedRows > 0 ? NoContent() : BadRequest();
+        var result = await _orderService.DeleteAsync(id);
+        return result ? NoContent() : BadRequest();
     }
 }

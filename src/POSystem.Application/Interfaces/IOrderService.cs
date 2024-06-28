@@ -5,9 +5,9 @@ namespace POSystem.Application.Interfaces;
 
 public interface IOrderService
 {
-    Task<int> CreateAsync(CreateOrderDto order);
-    Task<int> UpdateAsync(UpdateOrderDto order);
-    Task<int> DeleteAsync(int id);
+    Task<bool> CreateAsync(CreateOrderDto order);
+    Task<bool> UpdateAsync(UpdateOrderDto order);
+    Task<bool> DeleteAsync(int id);
     Task<Order> GetByIdAsync(int id);
     Task<List<Order>> GetPagedAsync(int cursor, int pageSize);
 }

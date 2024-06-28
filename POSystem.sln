@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.Application", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.Infrastructure", "src\POSystem.Infrastructure\POSystem.Infrastructure.csproj", "{B3AA4A06-6481-4985-9276-702532A53434}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSystem.Web", "src\POSystem.Web\POSystem.Web.csproj", "{3CBD4E76-057A-43F8-A679-0B8C519972B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{B3AA4A06-6481-4985-9276-702532A53434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3AA4A06-6481-4985-9276-702532A53434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3AA4A06-6481-4985-9276-702532A53434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CBD4E76-057A-43F8-A679-0B8C519972B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CBD4E76-057A-43F8-A679-0B8C519972B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CBD4E76-057A-43F8-A679-0B8C519972B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CBD4E76-057A-43F8-A679-0B8C519972B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{31023F13-118B-430B-ACCE-C42A8E2B3A39} = {C3A7F405-8E87-4167-922F-5D7D0BF02963}
 		{1A45EF16-9B8B-47F6-AEB7-64D528059A34} = {C3A7F405-8E87-4167-922F-5D7D0BF02963}
 		{B3AA4A06-6481-4985-9276-702532A53434} = {C3A7F405-8E87-4167-922F-5D7D0BF02963}
+		{3CBD4E76-057A-43F8-A679-0B8C519972B6} = {C3A7F405-8E87-4167-922F-5D7D0BF02963}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8ADEE437-8DA9-4850-97A8-3F2AF3A96EDB}

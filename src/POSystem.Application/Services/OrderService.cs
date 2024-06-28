@@ -21,15 +21,17 @@ public class OrderService : IOrderService
         _mapper = mapper;
     }
 
-    public async Task<int> CreateAsync(CreateOrderDto order)
+    public async Task<bool> CreateAsync(CreateOrderDto order)
     {
         var mappedOrder = _mapper.Map<Order>(order);
-        return await _orderRepository.CreateAsync(mappedOrder);
+        var numberOfAffectedRows = await _orderRepository.CreateAsync(mappedOrder);
+        return numberOfAffectedRows > 0;
     }
 
-    public async Task<int> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        return await _orderRepository.DeleteAsync(id);
+        var numberOfAffectedRows = await _orderRepository.DeleteAsync(id);
+        return numberOfAffectedRows > 0;
     }
 
     public async Task<Order> GetByIdAsync(int id)
@@ -42,9 +44,10 @@ public class OrderService : IOrderService
         return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
     }
 
-    public async Task<int> UpdateAsync(UpdateOrderDto order)
+    public async Task<bool> UpdateAsync(UpdateOrderDto order)
     {
         var mappedOrder = _mapper.Map<Order>(order);
-        return await _orderRepository.UpdateAsync(mappedOrder);
+        var numberOfAffectedRows = await _orderRepository.UpdateAsync(mappedOrder);
+        return numberOfAffectedRows > 0;
     }
 }
