@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using POSystem.Application.Interfaces;
 using POSystem.Domain.DTOs;
+using POSystem.Domain.Entities;
 
 namespace POSystem.API.Controllers;
 
@@ -9,10 +11,12 @@ namespace POSystem.API.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
+    private readonly IMapper _mapper;
 
-    public OrderController(IOrderService orderService)
+    public OrderController(IOrderService orderService, IMapper mapper)
     {
         _orderService = orderService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -60,7 +64,9 @@ public class OrderController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var result = await _orderService.UpdateAsync(order);
+        var mappedOrder = _mapper.Map<Order>(order);
+
+        var result = await _orderService.UpdateAsync(mappedOrder);
         return result ? NoContent() : BadRequest();
     }
 

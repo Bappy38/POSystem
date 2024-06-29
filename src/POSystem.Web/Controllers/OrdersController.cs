@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using POSystem.Application.Interfaces;
 using POSystem.Domain.DTOs;
+using POSystem.Domain.Entities;
 using POSystem.Web.Constants;
 
 namespace POSystem.Web.Controllers;
@@ -8,10 +10,12 @@ namespace POSystem.Web.Controllers;
 public class OrdersController : Controller
 {
     private readonly IOrderService _orderService;
+    private readonly IMapper _mapper;
 
-    public OrdersController(IOrderService orderService)
+    public OrdersController(IOrderService orderService, IMapper mapper)
     {
         _orderService = orderService;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
@@ -61,7 +65,9 @@ public class OrdersController : Controller
             return NotFound();
         }
 
-        return View(order);
+        var updateOrderDto = _mapper.Map<UpdateOrderDto>(order);
+
+        return View(updateOrderDto);
     }
 
     [HttpPost]
@@ -73,7 +79,8 @@ public class OrdersController : Controller
             return View(order);
         }
 
-        var result = await _orderService.CreateAsync(order);
+        var mappedOrder = _mapper.Map<Order>(order);
+        var result = await _orderService.UpdateAsync(mappedOrder);
 
         var notificationType = result ? Notification.Success : Notification.Error;
         var notificationMessage = result

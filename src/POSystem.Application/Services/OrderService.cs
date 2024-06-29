@@ -44,10 +44,9 @@ public class OrderService : IOrderService
         return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
     }
 
-    public async Task<bool> UpdateAsync(UpdateOrderDto order)
+    public async Task<bool> UpdateAsync(Order order)
     {
-        var mappedOrder = _mapper.Map<Order>(order);
-        var numberOfAffectedRows = await _orderRepository.UpdateAsync(mappedOrder);
+        var numberOfAffectedRows = await _orderRepository.UpdateAsync(order);
         return numberOfAffectedRows > 0;
     }
 }

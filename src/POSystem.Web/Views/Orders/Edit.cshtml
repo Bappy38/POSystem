@@ -1,11 +1,11 @@
-﻿@model POSystem.Domain.Entities.Order
+﻿@model POSystem.Domain.DTOs.UpdateOrderDto
 
 @{
     ViewData["Title"] = "Create";
 }
 
 <div class="container">
-    <h4 class="pt-4">Purchase Order Entry Form</h4>
+    <h4 class="pt-4">Update Order Form</h4>
     <hr />
 
     <div>
@@ -106,28 +106,32 @@
                         </tr>
                     </thead>
                     <tbody id="itemsTableBody">
-                        @if (Model?.Items is not null)
+                        @if (Model?.Items != null)
                         {
-                            @foreach (var item in Model.Items)
+                            for (int i = 0; i < Model.Items.Count; i++)
                             {
                                 <tr class="table-primary">
                                     <td>
-                                        <input type="hidden" name="item.Name" value="item.Name" />
-                                        @item.Name
+                                        <input type="hidden" name="Items[@i].Name" value="@Model.Items[i].Name" />
+                                        @Model.Items[i].Name
                                     </td>
                                     <td>
-                                        @item.Quantity
-                                        <input type="hidden" name="item.Quantity" value="item.Quantity" />
+                                        <input type="hidden" name="Items[@i].Quantity" value="@Model.Items[i].Quantity" />
+                                        @Model.Items[i].Quantity
                                     </td>
                                     <td>
-                                        @item.Rate
-                                        <input type="hidden" name="item.Rate" value="item.Rate" />
+                                        <input type="hidden" name="Items[@i].Rate" value="@Model.Items[i].Rate" />
+                                        @Model.Items[i].Rate
                                     </td>
                                     <td>
-                                        <i class="bi bi-pencil-square"></i>
+                                        <button type="button" class="btn btn-link text-warning edit-item">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
                                     </td>
                                     <td>
-                                        <i class="bi bi-trash3"></i>
+                                        <button type="button" class="btn btn-link text-danger remove-item">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             }
