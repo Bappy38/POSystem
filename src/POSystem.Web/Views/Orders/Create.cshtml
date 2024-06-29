@@ -22,9 +22,9 @@
                 </div>
                 <div class="col-4"></div>
                 <div class="form-group col-4">
-                    <label asp-for="ReferenceId" class="form-label">PO. NO</label>
-                    <input asp-for="ReferenceId" class="form-control" type="text" placeholder="Purchase Order No">
-                    <span asp-validation-for="ReferenceId" class="text-danger"></span>
+                    <label asp-for="PurchaseOrderNo" class="form-label">PO. NO</label>
+                    <input asp-for="PurchaseOrderNo" class="form-control" type="text" placeholder="Purchase Order No">
+                    <span asp-validation-for="PurchaseOrderNo" class="text-danger"></span>
                 </div>
             </div>
 
@@ -154,13 +154,6 @@
                             let tableBody = document.getElementById('itemsTableBody');
                             let newRow = document.createElement('tr');
                             newRow.classList.add('table-primary');
-                            // newRow.innerHTML = `
-                            //             <td>${itemName}</td>
-                            //             <td>${itemQuantity}</td>
-                            //             <td>${itemRate}</td>
-                            //             <td><i class="bi bi-pencil-square"></i></td>
-                            //             <td><i class="bi bi-trash3"></i></td>
-                            //         `;
 
                             let rowCount = tableBody.rows.length;
                             newRow.innerHTML = `
