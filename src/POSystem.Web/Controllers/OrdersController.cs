@@ -11,11 +11,16 @@ public class OrdersController : Controller
 {
     private readonly IOrderService _orderService;
     private readonly IMapper _mapper;
+    private readonly IOrderExporter _orderExporter;
 
-    public OrdersController(IOrderService orderService, IMapper mapper)
+    public OrdersController(
+        IOrderService orderService, 
+        IMapper mapper, 
+        IOrderExporter orderExporter)
     {
         _orderService = orderService;
         _mapper = mapper;
+        _orderExporter = orderExporter;
     }
 
     public async Task<IActionResult> Index(int pageNo = 1, int pageSize = 10, string searchQuery = "")
@@ -134,5 +139,20 @@ public class OrdersController : Controller
         TempData[notificationType] = notificationMessage;
 
         return RedirectToAction("Index");
+    }
+
+
+    public async Task<IActionResult> Export(int id)
+    {
+        var order = await _orderService.GetByIdAsync(id);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        var stream = await _orderExporter.ExportAsync(order);
+
+        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
     }
 }

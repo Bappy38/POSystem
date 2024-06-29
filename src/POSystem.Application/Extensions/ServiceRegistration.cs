@@ -14,6 +14,7 @@ public static class ServiceRegistration
 
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<IOrderExporter, OrderExporter>();
 
         return services;
     }
