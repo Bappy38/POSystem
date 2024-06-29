@@ -1,0 +1,115 @@
+﻿@model POSystem.Domain.DTOs.UpdateOrderDto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <h4 class="pt-4">Confirm Delete</h4>
+    <hr />
+
+    <div>
+        <form asp-action="Delete">
+            <input asp-for="Id" hidden></input>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="row">
+                <div class="form-group col-4">
+                    <fieldset>
+                        <label asp-for="ReferenceId" class="form-label">REF. ID</label>
+                        <input disabled asp-for="ReferenceId" class="form-control" type="text" placeholder="Reference ID">
+                        <span asp-validation-for="ReferenceId" class="text-danger"></span>
+                    </fieldset>
+                </div>
+                <div class="col-4"></div>
+                <div class="form-group col-4">
+                    <label asp-for="PurchaseOrderNo" class="form-label">PO. NO</label>
+                    <input disabled asp-for="PurchaseOrderNo" class="form-control" type="text" placeholder="Purchase Order No">
+                    <span asp-validation-for="PurchaseOrderNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="form-group col-4">
+                    <label asp-for="PlacedAtUtc" class="form-label">PO DATE</label>
+                    <input disabled asp-for="PlacedAtUtc" id="PlacedAtUtc" class="form-control" type="date" readonly>
+                    <span asp-validation-for="PlacedAtUtc" class="text-danger"></span>
+                </div>
+                <div class="col-4"></div>
+                <div class="form-group col-4">
+                    <label asp-for="SupplierId" class="form-label">Supplier</label>
+                    <input disabled asp-for="SupplierId" class="form-control" type="text" placeholder="Supplier">
+                    <span asp-validation-for="SupplierId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="form-group col-4">
+                    <label asp-for="ExpectedDate" class="form-label">Expected Date</label>
+                    <input disabled asp-for="ExpectedDate" class="form-control" type="date">
+                    <span asp-validation-for="ExpectedDate" class="text-danger"></span>
+                </div>
+                <div class="col-4"></div>
+                <div class="form-group col-4">
+                    <label asp-for="Remark" class="form-label">Remark</label>
+                    <input disabled asp-for="Remark" class="form-control" placeholder="Remark" />
+                    <span asp-validation-for="Remark" class="text-danger"></span>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="pt-4">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                ITEM NAME
+                            </th>
+                            <th>
+                                QTY
+                            </th>
+                            <th>
+                                RATE ($)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsTableBody">
+                        @if (Model?.Items != null)
+                        {
+                            for (int i = 0; i < Model.Items.Count; i++)
+                            {
+                                <tr class="table-primary">
+                                    <td>
+                                        <input type="hidden" name="Items[@i].Name" value="@Model.Items[i].Name" />
+                                        @Model.Items[i].Name
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="Items[@i].Quantity" value="@Model.Items[i].Quantity" />
+                                        @Model.Items[i].Quantity
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="Items[@i].Rate" value="@Model.Items[i].Rate" />
+                                        @Model.Items[i].Rate
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pt-3 text-end">
+                <button type="submit" class="btn btn-danger" style="width: 120px">Delete</button>
+
+                <a asp-controller="Orders" asp-action="Index" class="btn btn-secondary" style="width: 120px">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

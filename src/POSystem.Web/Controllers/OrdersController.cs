@@ -85,9 +85,50 @@ public class OrdersController : Controller
         var notificationType = result ? Notification.Success : Notification.Error;
         var notificationMessage = result
             ?
-            OrderNotifications.CreatedSuccessfully
+            OrderNotifications.UpdatedSuccessfully
             :
-            OrderNotifications.FailedToCreate;
+            OrderNotifications.FailedToUpdate;
+        TempData[notificationType] = notificationMessage;
+
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        var order = await _orderService.GetByIdAsync(id);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        var updateOrderDto = _mapper.Map<UpdateOrderDto>(order);
+
+        return View(updateOrderDto);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> DeletePOST(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        var result = await _orderService.DeleteAsync(id);
+
+        var notificationType = result ? Notification.Success : Notification.Error;
+        var notificationMessage = result
+            ?
+            OrderNotifications.DeletedSuccessfully
+            :
+            OrderNotifications.FailedToDelete;
         TempData[notificationType] = notificationMessage;
 
         return RedirectToAction("Index");
