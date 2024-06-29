@@ -10,9 +10,7 @@
     <None Remove="Data\Scripts\1.1_create_tables_2024_06_2601.sql" />
     <None Remove="Data\Scripts\2.1_views_2024_06_2601.sql" />
     <None Remove="Data\Scripts\3.1_stored_procedures_2024_06_2601.sql" />
-    <None Remove="Data\Scripts\4.1_SeedSuppliers__2024_06_2601.sql" />
-    <None Remove="Data\Scripts\4.2_SeedOrders__2024_06_2601.sql" />
-    <None Remove="Data\Scripts\4.3_SeedLineItems_2024_06_2601.sql" />
+    <None Remove="Data\Scripts\4.1_Seed_2024_06_2601.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,9 +19,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Data\Scripts\1.1_create_tables_2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\4.3_SeedLineItems_2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\4.2_SeedOrders__2024_06_2601.sql" />
-    <EmbeddedResource Include="Data\Scripts\4.1_SeedSuppliers__2024_06_2601.sql" />
+    <EmbeddedResource Include="Data\Scripts\4.1_Seed_2024_06_2601.sql" />
   </ItemGroup>
 
   <ItemGroup>
