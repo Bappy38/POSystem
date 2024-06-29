@@ -112,13 +112,16 @@
                             {
                                 <tr class="table-primary">
                                     <td>
+                                        <input type="hidden" name="item.Name" value="item.Name" />
                                         @item.Name
                                     </td>
                                     <td>
                                         @item.Quantity
+                                        <input type="hidden" name="item.Quantity" value="item.Quantity" />
                                     </td>
                                     <td>
                                         @item.Rate
+                                        <input type="hidden" name="item.Rate" value="item.Rate" />
                                     </td>
                                     <td>
                                         <i class="bi bi-pencil-square"></i>
@@ -134,53 +137,126 @@
             </div>
 
             <div class="pt-3 text-end">
-                <button type="submit" class="btn btn-primary" style="width: 120px">Create</button>
+                <button type="submit" class="btn btn-success" style="width: 120px">Create</button>
 
-                <a asp-controller="Orders" asp-action="Index" class="btn btn-secondary" style="width: 120px">Back to List</a>
+                <a asp-controller="Orders" asp-action="Index" class="btn btn-danger" style="width: 120px">Close</a>
             </div>
 
             <script>
                 document.addEventListener('DOMContentLoaded', (e) => {
-                    document.getElementById('PlacedAtUtc').value = new Date().toISOString().split('T')[0];
 
-                    document.getElementById('addItemButton').addEventListener('click', (event) => {
-                        event.preventDefault();
+                document.getElementById('PlacedAtUtc').value = new Date().toISOString().split('T')[0];
 
-                        let itemName = document.getElementById('itemName').value;
-                        let itemQuantity = document.getElementById('itemQuantity').value;
-                        let itemRate = document.getElementById('itemRate').value;
+                let currentEditIndex = null;
 
-                        if (itemName && itemQuantity && itemRate) {
-                            let tableBody = document.getElementById('itemsTableBody');
-                            let newRow = document.createElement('tr');
-                            newRow.classList.add('table-primary');
+                document.getElementById('addItemButton').addEventListener('click', (event) => {
+                    event.preventDefault();
 
-                            let rowCount = tableBody.rows.length;
-                            newRow.innerHTML = `
-                                        <td>
-                                            <input type="hidden" name="Items[${rowCount}].Name" value="${itemName}" />
-                                            ${itemName}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="Items[${rowCount}].Quantity" value="${itemQuantity}" />
-                                            ${itemQuantity}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="Items[${rowCount}].Rate" value="${itemRate}" />
-                                            ${itemRate}
-                                        </td>
-                                        <td><i class="bi bi-pencil-square"></i></td>
-                                        <td><i class="bi bi-trash3"></i></td>
-                                    `;
-                            tableBody.appendChild(newRow);
+                    let itemName = document.getElementById('itemName').value;
+                    let itemQuantity = document.getElementById('itemQuantity').value;
+                    let itemRate = document.getElementById('itemRate').value;
 
-                            document.getElementById('itemName').value = '';
-                            document.getElementById('itemQuantity').value = '';
-                            document.getElementById('itemRate').value = '';
+                    if (itemName && itemQuantity && itemRate) {
+                        if (currentEditIndex === null) {
+                            addItem(itemName, itemQuantity, itemRate);
+                        } else {
+                            updateItem(itemName, itemQuantity, itemRate);
                         }
-                    });
+
+                        clearInputs();
+                        currentEditIndex = null;
+                    }
                 });
-            </script>
+
+                function addItem(name, quantity, rate) {
+                    let tableBody = document.getElementById('itemsTableBody');
+                    let rowCount = tableBody.rows.length;
+
+                    let newRow = document.createElement('tr');
+                    newRow.classList.add('table-primary');
+                    newRow.innerHTML = `
+                        <td>
+                            <input type="hidden" name="Items[${rowCount}].Name" value="${name}" />
+                            ${name}
+                        </td>
+                        <td>
+                            <input type="hidden" name="Items[${rowCount}].Quantity" value="${quantity}" />
+                            ${quantity}
+                        </td>
+                        <td>
+                            <input type="hidden" name="Items[${rowCount}].Rate" value="${rate}" />
+                            ${rate}
+                        </td>
+                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
+                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    attachEventHandlers(newRow);
+                }
+
+                function updateItem(name, quantity, rate) {
+                    let row = document.querySelector(`#itemsTableBody tr:nth-child(${currentEditIndex + 1})`);
+                    row.innerHTML = `
+                        <td>
+                            <input type="hidden" name="Items[${currentEditIndex}].Name" value="${name}" />
+                            ${name}
+                        </td>
+                        <td>
+                            <input type="hidden" name="Items[${currentEditIndex}].Quantity" value="${quantity}" />
+                            ${quantity}
+                        </td>
+                        <td>
+                            <input type="hidden" name="Items[${currentEditIndex}].Rate" value="${rate}" />
+                            ${rate}
+                        </td>
+                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
+                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                    `;
+
+                    attachEventHandlers(row);
+                }
+
+                function clearInputs() {
+                    document.getElementById('itemName').value = '';
+                    document.getElementById('itemQuantity').value = '';
+                    document.getElementById('itemRate').value = '';
+                }
+
+                function attachEventHandlers(row) {
+                    row.querySelector('.edit-item').addEventListener('click', (event) => {
+                        let row = event.target.closest('tr');
+                        currentEditIndex = Array.from(row.parentElement.children).indexOf(row);
+
+                        document.getElementById('itemName').value = row.querySelector('input[name$=".Name"]').value;
+                        document.getElementById('itemQuantity').value = row.querySelector('input[name$=".Quantity"]').value;
+                        document.getElementById('itemRate').value = row.querySelector('input[name$=".Rate"]').value;
+                    });
+
+                    row.querySelector('.remove-item').addEventListener('click', (event) => {
+                        let row = event.target.closest('tr');
+                        row.remove();
+
+                        // Update the indices of the remaining rows to ensure model binding works correctly
+                        updateRowIndices();
+                    });
+                }
+
+                function updateRowIndices() {
+                    let tableBody = document.getElementById('itemsTableBody');
+                    let rows = tableBody.querySelectorAll('tr');
+                    rows.forEach((row, index) => {
+                        row.querySelector('input[name$=".Name"]').name = `Items[${index}].Name`;
+                        row.querySelector('input[name$=".Quantity"]').name = `Items[${index}].Quantity`;
+                        row.querySelector('input[name$=".Rate"]').name = `Items[${index}].Rate`;
+                    });
+                }
+
+                document.querySelectorAll('#itemsTableBody tr').forEach(row => {
+                    attachEventHandlers(row);
+                });
+        });
+    </script>
         </form>
     </div>
 </div>
