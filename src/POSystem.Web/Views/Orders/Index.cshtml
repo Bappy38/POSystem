@@ -16,8 +16,8 @@
         </div>
         
         <div class="col-4 text-end">
-            <form class="d-flex">
-                <input class="form-control me-sm-2" type="search" placeholder="Search">
+            <form asp-action="Index" method="get" class="d-flex">
+                <input class="form-control me-sm-2" type="text" name="searchQuery" placeholder="Search" value="@ViewData["SearchQuery"]">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -66,7 +66,7 @@
                             @Html.DisplayFor(modelItem => order.PlacedAtUtc)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.SupplierId)
+                            @Html.DisplayFor(modelItem => order.SupplierName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => order.ExpectedDate)
@@ -95,37 +95,37 @@
             }
 
             <li class="page-item @prevDisabled">
-                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">&laquo;</a>
+                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">&laquo;</a>
             </li>
             @if (Model.PageIndex - 2 >= 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-2)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">@(Model.PageIndex - 2)</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-2)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">@(Model.PageIndex - 2)</a>
                 </li>
             }
             @if(Model.PageIndex-1 >= 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">@(Model.PageIndex-1)</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex-1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">@(Model.PageIndex - 1)</a>
                 </li>
             }
             <li class="page-item active">
-                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">@(Model.PageIndex)</a>
+                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">@(Model.PageIndex)</a>
             </li>
             @if(Model.PageIndex+1 < Model.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">@(Model.PageIndex+1)</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">@(Model.PageIndex + 1)</a>
                 </li>
             }
             @if (Model.PageIndex + 2 < Model.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+2)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">@(Model.PageIndex + 2)</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+2)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">@(Model.PageIndex + 2)</a>
                 </li>
             }
             <li class="page-item @nextDisabled">
-                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="">&raquo;</a>
+                <a class="page-link" asp-action="Index" asp-route-pageNo="@(Model.PageIndex+1)" asp-route-pageSize="@(Model.PageSize)" asp-route-searchQuery="@ViewData["SearchQuery"]">&raquo;</a>
             </li>
         </ul>
     </div>

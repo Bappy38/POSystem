@@ -20,6 +20,8 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Index(int pageNo = 1, int pageSize = 10, string searchQuery = "")
     {
+        ViewData["SearchQuery"] = searchQuery;
+
         var orders = await _orderService.GetPagedAsync(pageNo, pageSize, searchQuery);
         return View(orders);
     }
