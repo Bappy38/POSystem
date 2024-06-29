@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using POSystem.Application.Constants;
 using POSystem.Application.Interfaces;
 using POSystem.Domain.DTOs;
