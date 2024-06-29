@@ -6,6 +6,7 @@ using POSystem.Application.Interfaces;
 using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 using POSystem.Web.Constants;
+using POSystem.Web.Extensions;
 using POSystem.Web.Models;
 
 namespace POSystem.Web.Controllers;
@@ -40,17 +41,13 @@ public class OrdersController : Controller
     public async Task<IActionResult> Create()
     {
         var suppliers = await _supplierService.GetSuppliersAsync();
-        var orderViewModel = new CreateOrderViewModel
+        var createOrderViewModel = new CreateOrderViewModel
         {
             OrderDto = new CreateOrderDto(),
-            Suppliers = suppliers.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList()
+            Suppliers = suppliers.ToDropdownOption()
         };
 
-        return View(orderViewModel);
+        return View(createOrderViewModel);
     }
 
     [HttpPost]
@@ -60,11 +57,7 @@ public class OrdersController : Controller
         if (!ModelState.IsValid)
         {
             var suppliers = await _supplierService.GetSuppliersAsync();
-            createOrderViewModel.Suppliers = suppliers.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList();
+            createOrderViewModel.Suppliers = suppliers.ToDropdownOption();
 
             return View(createOrderViewModel);
         }
@@ -97,20 +90,29 @@ public class OrdersController : Controller
         }
 
         var updateOrderDto = _mapper.Map<UpdateOrderDto>(order);
+        var suppliers = await _supplierService.GetSuppliersAsync();
 
-        return View(updateOrderDto);
+        var updateOrderViewModel = new UpdateOrderViewModel
+        {
+            OrderDto = updateOrderDto,
+            SupplierOptions = suppliers.ToDropdownOption()
+        };
+
+        return View(updateOrderViewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Edit(UpdateOrderDto order)
+    public async Task<ActionResult> Edit(UpdateOrderViewModel updateOrderViewModel)
     {
         if (!ModelState.IsValid)
         {
-            return View(order);
+            var suppliers = await _supplierService.GetSuppliersAsync();
+            updateOrderViewModel.SupplierOptions = suppliers.ToDropdownOption();
+            return View(updateOrderViewModel);
         }
 
-        var mappedOrder = _mapper.Map<Order>(order);
+        var mappedOrder = _mapper.Map<Order>(updateOrderViewModel.OrderDto);
         var result = await _orderService.UpdateAsync(mappedOrder);
 
         var notificationType = result ? Notification.Success : Notification.Error;

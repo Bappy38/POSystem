@@ -1,4 +1,4 @@
-﻿@model POSystem.Domain.DTOs.UpdateOrderDto
+﻿@model POSystem.Web.Models.UpdateOrderViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -10,49 +10,50 @@
 
     <div>
         <form asp-action="Edit">
+            <input asp-for="OrderDto.Id" hidden></input>
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="row">
                 <div class="form-group col-4">
                     <fieldset>
-                        <label asp-for="ReferenceId" class="form-label">REF. ID</label>
-                        <input asp-for="ReferenceId" class="form-control" type="text" placeholder="Reference ID">
-                        <span asp-validation-for="ReferenceId" class="text-danger"></span>
+                        <label asp-for="OrderDto.ReferenceId" class="form-label">REF. ID</label>
+                        <input asp-for="OrderDto.ReferenceId" class="form-control" type="text" placeholder="Reference ID">
+                        <span asp-validation-for="OrderDto.ReferenceId" class="text-danger"></span>
                     </fieldset>
                 </div>
                 <div class="col-4"></div>
                 <div class="form-group col-4">
-                    <label asp-for="PurchaseOrderNo" class="form-label">PO. NO</label>
-                    <input asp-for="PurchaseOrderNo" class="form-control" type="text" placeholder="Purchase Order No">
-                    <span asp-validation-for="PurchaseOrderNo" class="text-danger"></span>
+                    <label asp-for="OrderDto.PurchaseOrderNo" class="form-label">PO. NO</label>
+                    <input asp-for="OrderDto.PurchaseOrderNo" class="form-control" type="text" placeholder="Purchase Order No">
+                    <span asp-validation-for="OrderDto.PurchaseOrderNo" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row pt-2">
                 <div class="form-group col-4">
-                    <label asp-for="PlacedAtUtc" class="form-label">PO DATE</label>
-                    <input asp-for="PlacedAtUtc" id="PlacedAtUtc" class="form-control" type="date" readonly>
-                    <span asp-validation-for="PlacedAtUtc" class="text-danger"></span>
+                    <label asp-for="OrderDto.PlacedAtUtc" class="form-label">PO DATE</label>
+                    <input asp-for="OrderDto.PlacedAtUtc" id="PlacedAtUtc" class="form-control" type="date" readonly>
+                    <span asp-validation-for="OrderDto.PlacedAtUtc" class="text-danger"></span>
                 </div>
                 <div class="col-4"></div>
                 <div class="form-group col-4">
-                    <label asp-for="SupplierId" class="form-label">Supplier</label>
-                    <input asp-for="SupplierId" class="form-control" type="text" placeholder="Supplier">
-                    <span asp-validation-for="SupplierId" class="text-danger"></span>
+                    <label asp-for="OrderDto.SupplierId" class="form-label">Supplier</label>
+                    <select asp-for="OrderDto.SupplierId" asp-items="Model.SupplierOptions" class="form-control"></select>
+                    <span asp-validation-for="OrderDto.SupplierId" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row pt-2">
                 <div class="form-group col-4">
-                    <label asp-for="ExpectedDate" class="form-label">Expected Date</label>
-                    <input asp-for="ExpectedDate" class="form-control" type="date">
-                    <span asp-validation-for="ExpectedDate" class="text-danger"></span>
+                    <label asp-for="OrderDto.ExpectedDate" class="form-label">Expected Date</label>
+                    <input asp-for="OrderDto.ExpectedDate" class="form-control" type="date">
+                    <span asp-validation-for="OrderDto.ExpectedDate" class="text-danger"></span>
                 </div>
                 <div class="col-4"></div>
                 <div class="form-group col-4">
-                    <label asp-for="Remark" class="form-label">Remark</label>
-                    <input asp-for="Remark" class="form-control" placeholder="Remark" />
-                    <span asp-validation-for="Remark" class="text-danger"></span>
+                    <label asp-for="OrderDto.Remark" class="form-label">Remark</label>
+                    <input asp-for="OrderDto.Remark" class="form-control" placeholder="Remark" />
+                    <span asp-validation-for="OrderDto.Remark" class="text-danger"></span>
                 </div>
             </div>
 
@@ -103,30 +104,48 @@
                         </tr>
                     </thead>
                     <tbody id="itemsTableBody">
-                        @if (Model?.Items != null)
+                        @if (Model?.OrderDto.Items != null)
                         {
-                            for (int i = 0; i < Model.Items.Count; i++)
+                            for (int i = 0; i < Model.OrderDto.Items.Count; i++)
                             {
                                 <tr class="table-primary">
                                     <td>
-                                        <input type="hidden" name="Items[@i].Name" value="@Model.Items[i].Name" />
-                                        @Model.Items[i].Name
+                                        <input
+                                            type="hidden"
+                                            name="OrderDto.Items[@i].Name"
+                                            value="@Model.OrderDto.Items[i].Name"
+                                        />
+                                        @Model.OrderDto.Items[i].Name
                                     </td>
                                     <td>
-                                        <input type="hidden" name="Items[@i].Quantity" value="@Model.Items[i].Quantity" />
-                                        @Model.Items[i].Quantity
+                                        <input
+                                            type="hidden"
+                                               name="OrderDto.Items[@i].Quantity"
+                                               value="@Model.OrderDto.Items[i].Quantity"
+                                          />
+                                        @Model.OrderDto.Items[i].Quantity
                                     </td>
                                     <td>
-                                        <input type="hidden" name="Items[@i].Rate" value="@Model.Items[i].Rate" />
-                                        @Model.Items[i].Rate
+                                        <input
+                                            type="hidden"
+                                            name="OrderDto.Items[@i].Rate"
+                                            value="@Model.OrderDto.Items[i].Rate"
+                                          />
+                                        @Model.OrderDto.Items[i].Rate
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-link text-warning edit-item">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link text-warning edit-item"
+                                        >
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-link text-danger remove-item">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link text-danger remove-item"
+                                        >
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     </td>
@@ -177,19 +196,42 @@
                     newRow.classList.add('table-primary');
                     newRow.innerHTML = `
                         <td>
-                            <input type="hidden" name="Items[${rowCount}].Name" value="${name}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Name" value="${name}"
+                            />
                             ${name}
                         </td>
                         <td>
-                            <input type="hidden" name="Items[${rowCount}].Quantity" value="${quantity}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Quantity" value="${quantity}"
+                            />
                             ${quantity}
                         </td>
                         <td>
-                            <input type="hidden" name="Items[${rowCount}].Rate" value="${rate}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Rate" value="${rate}"
+                            />
                             ${rate}
                         </td>
-                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-warning edit-item"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-danger remove-item"
+                            >
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
                     `;
                     tableBody.appendChild(newRow);
 
@@ -200,19 +242,45 @@
                     let row = document.querySelector(`#itemsTableBody tr:nth-child(${currentEditIndex + 1})`);
                     row.innerHTML = `
                         <td>
-                            <input type="hidden" name="Items[${currentEditIndex}].Name" value="${name}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Name"
+                                value="${name}"
+                            />
                             ${name}
                         </td>
                         <td>
-                            <input type="hidden" name="Items[${currentEditIndex}].Quantity" value="${quantity}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Quantity"
+                                value="${quantity}"
+                            />
                             ${quantity}
                         </td>
                         <td>
-                            <input type="hidden" name="Items[${currentEditIndex}].Rate" value="${rate}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Rate" 
+                                value="${rate}"
+                            />
                             ${rate}
                         </td>
-                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-warning edit-item"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-danger remove-item"
+                            >
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
                     `;
 
                     attachEventHandlers(row);
@@ -246,9 +314,9 @@
                     let tableBody = document.getElementById('itemsTableBody');
                     let rows = tableBody.querySelectorAll('tr');
                     rows.forEach((row, index) => {
-                        row.querySelector('input[name$=".Name"]').name = `Items[${index}].Name`;
-                        row.querySelector('input[name$=".Quantity"]').name = `Items[${index}].Quantity`;
-                        row.querySelector('input[name$=".Rate"]').name = `Items[${index}].Rate`;
+                            row.querySelector('input[name$=".Name"]').name = `OrderDto.Items[${index}].Name`;
+                        row.querySelector('input[name$=".Quantity"]').name = `OrderDto.Items[${index}].Quantity`;
+                            row.querySelector('input[name$=".Rate"]').name = `OrderDto.Items[${index}].Rate`;
                     });
                 }
 
