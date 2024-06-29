@@ -72,7 +72,7 @@
                             @Html.DisplayFor(modelItem => order.ExpectedDate)
                         </td>
                         <td>
-                            <i class="bi bi-pencil-square"></i>
+                            <a asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id"><i class="bi bi-pencil-square"></i></a>
                         </td>
                         <td>
                             <i class="bi bi-trash3"></i>

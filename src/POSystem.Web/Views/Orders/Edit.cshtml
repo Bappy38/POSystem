@@ -1,4 +1,4 @@
-﻿@model POSystem.Domain.DTOs.CreateOrderDto
+﻿@model POSystem.Domain.Entities.Order
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
     <hr />
 
     <div>
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="row">
@@ -137,7 +137,7 @@
             </div>
 
             <div class="pt-3 text-end">
-                <button type="submit" class="btn btn-success" style="width: 120px">Create</button>
+                <button type="submit" class="btn btn-success" style="width: 120px">Update</button>
 
                 <a asp-controller="Orders" asp-action="Index" class="btn btn-danger" style="width: 120px">Close</a>
             </div>
