@@ -15,7 +15,14 @@ namespace POSystem.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //TODO:: Will fetch real data from database
+            var analytics = new AnalyticsViewModel
+            {
+                TotalOrderPlaced = 100,
+                TotalUnitSold = 100,
+                TotalTransaction = 10000
+            };
+            return View(analytics);
         }
 
         public IActionResult Privacy()

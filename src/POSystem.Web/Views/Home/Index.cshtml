@@ -1,8 +1,17 @@
-﻿@{
+﻿@model POSystem.Web.Models.AnalyticsViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center">
+    <h5 class="mt-5 text-white">System Analytics</h5>
+
+    <figure class="mt-5">
+        <blockquote class="blockquote">
+            <p class="mb-0">@Model.TotalOrderPlaced order placed so far.</p>
+            <p class="mb-0">@Model.TotalUnitSold unit sold so far.</p>
+            <p class="mb-0">@Model.TotalTransaction $ transaction made so far.</p>
+        </blockquote>
+    </figure>
 </div>
