@@ -62,19 +62,16 @@
                 <div class="form-group col-3">
                     <label for="itemName" class="form-label">Item Name</label>
                     <input for="itemName" id="itemName" type="text" class="form-control" placeholder="Item Name" />
-                    <span asp-validation-for="Remark" class="text-danger"></span>
                 </div>
 
                 <div class="form-group col-3">
                     <label for="itemQuantity" class="form-label">Quantity</label>
                     <input for="itemQuantity" id="itemQuantity" type="number" class="form-control" placeholder="Quantity" />
-                    <span asp-validation-for="Remark" class="text-danger"></span>
                 </div>
 
                 <div class="form-group col-3">
                     <label for="itemRate" class="form-label">Rate</label>
                     <input for="itemRate" id="itemRate" type="number" class="form-control" placeholder="Rate" />
-                    <span asp-validation-for="Remark" class="text-danger"></span>
                 </div>
 
                 <div class="col-3">
@@ -241,7 +238,6 @@
                         let row = event.target.closest('tr');
                         row.remove();
 
-                        // Update the indices of the remaining rows to ensure model binding works correctly
                         updateRowIndices();
                     });
                 }
