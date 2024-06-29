@@ -189,19 +189,45 @@
                     newRow.classList.add('table-primary');
                     newRow.innerHTML = `
                         <td>
-                            <input type="hidden" name="OrderDto.Items[${rowCount}].Name" value="${name}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Name"
+                                value="${name}"
+                            />
                             ${name}
                         </td>
                         <td>
-                            <input type="hidden" name="OrderDto.Items[${rowCount}].Quantity"    value="${quantity}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Quantity"
+                                value="${quantity}"
+                            />
                             ${quantity}
                         </td>
                         <td>
-                                            <input type="hidden" name="OrderDto.Items[${rowCount}].Rate" value="${rate}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${rowCount}].Rate"
+                                value="${rate}"
+                            />
                             ${rate}
                         </td>
-                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-warning edit-item"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-danger remove-item"
+                            >
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
                     `;
                     tableBody.appendChild(newRow);
 
@@ -212,19 +238,45 @@
                     let row = document.querySelector(`#itemsTableBody tr:nth-child(${currentEditIndex + 1})`);
                     row.innerHTML = `
                         <td>
-                                            <input type="hidden" name="OrderDto.Items[${currentEditIndex}].Name" value="${name}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Name"
+                                value="${name}" 
+                            />
                             ${name}
                         </td>
                         <td>
-                                            <input type="hidden" name="OrderDto.Items[${currentEditIndex}].Quantity" value="${quantity}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Quantity"
+                                value="${quantity}"
+                            />
                             ${quantity}
                         </td>
                         <td>
-                                            <input type="hidden" name="OrderDto.Items[${currentEditIndex}].Rate" value="${rate}" />
+                            <input
+                                type="hidden"
+                                name="OrderDto.Items[${currentEditIndex}].Rate"
+                                value="${rate}"
+                            />
                             ${rate}
                         </td>
-                        <td><button type="button" class="btn btn-link text-warning edit-item"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-link text-danger remove-item"><i class="bi bi-trash3"></i></button></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-warning edit-item"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-link text-danger remove-item"
+                            >
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
                     `;
 
                     attachEventHandlers(row);
