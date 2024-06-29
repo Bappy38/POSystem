@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 using POSystem.Domain.Repositories;
 using POSystem.Infrastructure.Data;
@@ -31,6 +32,7 @@ public class OrderRepository : IOrderRepository
 
             var parameters = new DynamicParameters();
             parameters.Add("ReferenceId", order.ReferenceId);
+            parameters.Add("PurchaseOrderNo", order.PurchaseOrderNo);
             parameters.Add("PlacedAtUtc", DateTime.UtcNow);
             parameters.Add("SupplierId", order.SupplierId);
             parameters.Add("ExpectedDate", order.ExpectedDate);
@@ -89,7 +91,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<List<Order>> GetPagedAsync(int cursor, int pageSize)
+    public async Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize)
     {
         using (var connection = _context.CreateConnection())
         {
@@ -98,8 +100,8 @@ public class OrderRepository : IOrderRepository
             parameters.Add("PageSize", pageSize);
             //parameters.Add("Search", search);
 
-            var orders = await connection.QueryAsync<Order>("spGetPagedOrders", parameters, commandType: CommandType.StoredProcedure);
-            return orders?.ToList() ?? new List<Order>();
+            var orders = await connection.QueryAsync<GetOrderDto>("spGetPagedOrders", parameters, commandType: CommandType.StoredProcedure);
+            return orders?.ToList() ?? new List<GetOrderDto>();
         }
     }
 
@@ -121,6 +123,7 @@ public class OrderRepository : IOrderRepository
             var parameters = new DynamicParameters();
             parameters.Add("OrderId", order.Id);
             parameters.Add("ReferenceId", order.ReferenceId);
+            parameters.Add("PurchaseOrderNo", order.PurchaseOrderNo);
             parameters.Add("PlacedAtUtc", order.PlacedAtUtc);
             parameters.Add("SupplierId", order.SupplierId);
             parameters.Add("ExpectedDate", order.ExpectedDate);

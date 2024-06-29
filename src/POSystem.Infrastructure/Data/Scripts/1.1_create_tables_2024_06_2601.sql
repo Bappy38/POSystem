@@ -8,7 +8,8 @@ CREATE TABLE Suppliers (
 
 CREATE TABLE Orders (
 	Id INT PRIMARY KEY IDENTITY,
-    ReferenceId NVARCHAR(50) NOT NULL,
+    ReferenceId INT NOT NULL,
+    PurchaseOrderNo NVARCHAR(255) NOT NULL,
     PlacedAtUtc DATETIME NOT NULL,
     SupplierId INT NOT NULL FOREIGN KEY REFERENCES Suppliers(Id),
     ExpectedDate DATETIME,

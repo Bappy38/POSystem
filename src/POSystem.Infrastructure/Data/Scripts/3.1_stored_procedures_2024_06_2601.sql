@@ -20,6 +20,7 @@ BEGIN
     SELECT 
         o.Id,
         o.ReferenceId,
+        o.PurchaseOrderNo,
         o.PlacedAtUtc,
         o.ExpectedDate,
         o.Remark,
@@ -46,16 +47,19 @@ BEGIN
     SELECT TOP (@PageSize)
         Id,
         ReferenceId,
+        PurchaseOrderNo,
         PlacedAtUtc,
         SupplierId,
         ExpectedDate,
-        Remark
-    FROM Orders
+        Remark,
+        SupplierName
+    FROM vwOrdersWithSupplierName
     WHERE (@CursorId IS NULL OR Id > @CursorId)
-      AND (@Search IS NULL OR ReferenceId LIKE '%' + @Search + '%')
+      AND (@Search IS NULL OR ReferenceId LIKE '%' + @Search + '%' OR SupplierName LIKE '%' + @Search + '%')
     ORDER BY Id;
 END;
 GO
+
 
 
 CREATE TYPE dbo.AddLineItemType AS TABLE
@@ -67,19 +71,20 @@ CREATE TYPE dbo.AddLineItemType AS TABLE
 GO
 
 CREATE PROCEDURE spAddOrder
-    @ReferenceId NVARCHAR(50),
+    @ReferenceId INT,
+    @PurchaseOrderNo NVARCHAR(255),
     @PlacedAtUtc DATETIME,
     @SupplierId INT,
     @ExpectedDate DATETIME = NULL,
-    @Remark NVARCHAR(MAX) = NULL,
+    @Remark NVARCHAR(255) = NULL,
     @LineItems dbo.AddLineItemType READONLY
 AS
 BEGIN
     BEGIN TRANSACTION;
 
     BEGIN TRY
-        INSERT INTO Orders (ReferenceId, PlacedAtUtc, SupplierId, ExpectedDate, Remark)
-        VALUES (@ReferenceId, @PlacedAtUtc, @SupplierId, @ExpectedDate, @Remark);
+        INSERT INTO Orders (ReferenceId, PurchaseOrderNo, PlacedAtUtc, SupplierId, ExpectedDate, Remark)
+        VALUES (@ReferenceId, @PurchaseOrderNo, @PlacedAtUtc, @SupplierId, @ExpectedDate, @Remark);
 
         DECLARE @OrderId INT;
         SET @OrderId = SCOPE_IDENTITY();
@@ -109,11 +114,12 @@ GO
 
 CREATE PROCEDURE spUpdateOrder
     @OrderId INT,
-    @ReferenceId NVARCHAR(50),
+    @ReferenceId INT,
+    @PurchaseOrderNo NVARCHAR(255),
     @PlacedAtUtc DATETIME,
     @SupplierId INT,
     @ExpectedDate DATETIME = NULL,
-    @Remark NVARCHAR(MAX) = NULL,
+    @Remark NVARCHAR(255) = NULL,
     @LineItems dbo.UpdateLineItemType READONLY
 AS
 BEGIN
@@ -123,6 +129,7 @@ BEGIN
         UPDATE Orders
         SET
             ReferenceId = @ReferenceId,
+            PurchaseOrderNo = @PurchaseOrderNo,
             PlacedAtUtc = @PlacedAtUtc,
             SupplierId = @SupplierId,
             ExpectedDate = @ExpectedDate,

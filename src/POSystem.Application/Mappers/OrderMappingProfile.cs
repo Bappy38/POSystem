@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using POSystem.Application.DTOs;
+using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 
 namespace POSystem.Application.Mappers;

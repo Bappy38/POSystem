@@ -1,16 +1,17 @@
 ﻿using POSystem.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace POSystem.Application.DTOs;
+namespace POSystem.Domain.DTOs;
 
 public class CreateOrderDto : IValidatableObject
 {
+    public int ReferenceId { get; init; }
+
     [Required]
-    public string ReferenceId { get; init; }
+    public string PurchaseOrderNo { get; init; }
 
     public DateTime PlacedAtUtc { get; init; } = DateTime.UtcNow;
 
-    [Required]
     public int SupplierId { get; init; }
 
     public DateTime? ExpectedDate { get; init; }
@@ -22,14 +23,14 @@ public class CreateOrderDto : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (string.IsNullOrWhiteSpace(ReferenceId))
+        if (ReferenceId <= 0)
         {
-            yield return new ValidationResult("ReferenceId is required.", new[] { nameof(ReferenceId) });
+            yield return new ValidationResult("Reference Id is required.", new[] { nameof(ReferenceId) });
         }
 
         if (SupplierId <= 0)
         {
-            yield return new ValidationResult("SupplierId is required.", new[] { nameof(SupplierId) });
+            yield return new ValidationResult("Supplier Id is required.", new[] { nameof(SupplierId) });
         }
 
         if (Items is null ||  Items.Count == 0)

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using POSystem.Application.DTOs;
 using POSystem.Application.Interfaces;
+using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 using POSystem.Domain.Repositories;
 
@@ -39,7 +39,7 @@ public class OrderService : IOrderService
         return await _orderRepository.GetByIdAsync(id);
     }
 
-    public async Task<List<Order>> GetPagedAsync(int cursor, int pageSize)
+    public async Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize)
     {
         return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
     }

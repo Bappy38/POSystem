@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using POSystem.Application.DTOs;
 using POSystem.Application.Interfaces;
+using POSystem.Domain.DTOs;
 
 namespace POSystem.API.Controllers;
 

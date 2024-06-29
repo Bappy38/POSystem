@@ -1,4 +1,4 @@
-﻿using POSystem.Application.DTOs;
+﻿using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
 
 namespace POSystem.Application.Interfaces;
@@ -9,5 +9,5 @@ public interface IOrderService
     Task<bool> UpdateAsync(UpdateOrderDto order);
     Task<bool> DeleteAsync(int id);
     Task<Order> GetByIdAsync(int id);
-    Task<List<Order>> GetPagedAsync(int cursor, int pageSize);
+    Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize);
 }

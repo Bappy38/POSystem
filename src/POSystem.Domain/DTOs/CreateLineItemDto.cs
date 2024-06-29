@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace POSystem.Application.DTOs;
+namespace POSystem.Domain.DTOs;
 
 public class CreateLineItemDto
 {
