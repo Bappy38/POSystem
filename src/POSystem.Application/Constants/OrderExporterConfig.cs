@@ -25,4 +25,7 @@ public static class OrderExporterConfig
 
     public const int RowHeight = 20;
     public const int ColumnWidth = 20;
+
+    public const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    public const string ExportFileName = "Orders.xlsx";
 }

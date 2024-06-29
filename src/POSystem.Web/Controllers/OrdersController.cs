@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using POSystem.Application.Constants;
 using POSystem.Application.Interfaces;
 using POSystem.Domain.DTOs;
 using POSystem.Domain.Entities;
@@ -25,7 +26,7 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Index(int pageNo = 1, int pageSize = 10, string searchQuery = "")
     {
-        ViewData["SearchQuery"] = searchQuery;
+        ViewData[TempDataKeys.SearchQuery] = searchQuery;
 
         var orders = await _orderService.GetPagedAsync(pageNo, pageSize, searchQuery);
         return View(orders);
@@ -55,7 +56,7 @@ public class OrdersController : Controller
             OrderNotifications.FailedToCreate;
         TempData[notificationType] = notificationMessage;
 
-        return RedirectToAction("Index");
+        return RedirectToAction(Actions.Index);
     }
 
     public async Task<IActionResult> Edit(int id)
@@ -97,7 +98,7 @@ public class OrdersController : Controller
             OrderNotifications.FailedToUpdate;
         TempData[notificationType] = notificationMessage;
 
-        return RedirectToAction("Index");
+        return RedirectToAction(Actions.Index);
     }
 
     public async Task<IActionResult> Delete(int id)
@@ -119,7 +120,7 @@ public class OrdersController : Controller
         return View(updateOrderDto);
     }
 
-    [HttpPost, ActionName("Delete")]
+    [HttpPost, ActionName(Actions.Delete)]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> DeletePOST(int id)
     {
@@ -138,7 +139,7 @@ public class OrdersController : Controller
             OrderNotifications.FailedToDelete;
         TempData[notificationType] = notificationMessage;
 
-        return RedirectToAction("Index");
+        return RedirectToAction(Actions.Index);
     }
 
 
@@ -153,6 +154,6 @@ public class OrdersController : Controller
 
         var stream = await _orderExporter.ExportAsync(order);
 
-        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
+        return File(stream.ToArray(), OrderExporterConfig.ContentType, OrderExporterConfig.ExportFileName);
     }
 }
