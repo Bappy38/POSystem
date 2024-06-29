@@ -10,4 +10,5 @@ public interface IOrderService
     Task<bool> DeleteAsync(int id);
     Task<Order> GetByIdAsync(int id);
     Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize);
+    Task<PaginatedList<GetOrderDto>> GetPagedAsync(int pageNo, int pageSize, string searchQuery);
 }

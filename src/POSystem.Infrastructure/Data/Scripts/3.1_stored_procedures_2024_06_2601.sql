@@ -60,7 +60,48 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE spGetOffsetPagedOrders
+    @PageNo INT,
+    @PageSize INT,
+    @Search NVARCHAR(50) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
 
+    DECLARE @Offset INT = (@PageNo - 1) * @PageSize;
+
+    WITH FilteredOrders AS (
+        SELECT
+            Id,
+            ReferenceId,
+            PurchaseOrderNo,
+            PlacedAtUtc,
+            SupplierId,
+            ExpectedDate,
+            Remark,
+            SupplierName,
+            ROW_NUMBER() OVER (ORDER BY Id) AS RowNum
+        FROM vwOrdersWithSupplierName
+        WHERE (@Search IS NULL OR ReferenceId LIKE '%' + @Search + '%' OR SupplierName LIKE '%' + @Search + '%')
+    )
+    SELECT
+        Id,
+        ReferenceId,
+        PurchaseOrderNo,
+        PlacedAtUtc,
+        SupplierId,
+        ExpectedDate,
+        Remark,
+        SupplierName
+    FROM FilteredOrders
+    WHERE RowNum > @Offset AND RowNum <= @Offset + @PageSize
+    ORDER BY RowNum;
+
+    SELECT COUNT(*) AS TotalItems
+    FROM vwOrdersWithSupplierName
+    WHERE (@Search IS NULL OR ReferenceId LIKE '%' + @Search + '%' OR SupplierName LIKE '%' + @Search + '%');
+END;
+GO
 
 CREATE TYPE dbo.AddLineItemType AS TABLE
 (

@@ -21,11 +21,11 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> Get(
-        [FromQuery] int cursor = 0,
+        [FromQuery] int pageNo = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] string searchQuery = "")
     {
-        var orders = await _orderService.GetPagedAsync(cursor, pageSize);
+        var orders = await _orderService.GetPagedAsync(pageNo, pageSize, searchQuery);
         return Ok(orders);
     }
 

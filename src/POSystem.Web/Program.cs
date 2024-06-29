@@ -1,4 +1,5 @@
 using POSystem.Application.Extensions;
+using POSystem.Infrastructure.Data;
 using POSystem.Infrastructure.Extenstions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,9 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+DbUpMigrationRunner
+    .MigrateDatabase(app.Configuration);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

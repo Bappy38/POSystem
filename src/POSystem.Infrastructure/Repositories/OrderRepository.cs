@@ -134,4 +134,33 @@ public class OrderRepository : IOrderRepository
             return rowsAffected;
         }
     }
+
+    public async Task<PaginatedList<GetOrderDto>>GetPagedAsync(int pageNo, int pageSize, string searchQuery)
+    {
+        using (var connection = _context.CreateConnection())
+        {
+            var parameters = new
+            {
+                PageNo = pageNo,
+                PageSize = pageSize,
+                Search = searchQuery
+            };
+
+            using (var multi = await connection.QueryMultipleAsync("spGetOffsetPagedOrders", parameters, commandType: CommandType.StoredProcedure))
+            {
+                var orders = multi.Read<GetOrderDto>().ToList();
+                var totalItems = multi.ReadSingle<int>();
+
+                var paginatedList = new PaginatedList<GetOrderDto>
+                {
+                    Items = orders,
+                    PageIndex = pageNo,
+                    PageSize = pageSize,
+                    TotalItems = totalItems
+                };
+
+                return paginatedList;
+            }
+        }
+    }
 }

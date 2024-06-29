@@ -44,6 +44,11 @@ public class OrderService : IOrderService
         return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
     }
 
+    public async Task<PaginatedList<GetOrderDto>> GetPagedAsync(int pageNo, int pageSize, string searchQuery)
+    {
+        return await _orderRepository.GetPagedAsync(pageNo, Math.Min(pageSize, MAX_PAGE_SIZE), searchQuery);
+    }
+
     public async Task<bool> UpdateAsync(Order order)
     {
         var numberOfAffectedRows = await _orderRepository.UpdateAsync(order);
