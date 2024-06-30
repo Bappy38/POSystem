@@ -16,7 +16,7 @@ public class CreateOrderDto : IValidatableObject
 
     public DateTime? ExpectedDate { get; init; }
 
-    public string Remark { get; init; }
+    public string? Remark { get; init; }
 
     [Required]
     public List<CreateLineItemDto> Items { get; init; } = new();
@@ -31,6 +31,11 @@ public class CreateOrderDto : IValidatableObject
         if (SupplierId <= 0)
         {
             yield return new ValidationResult("Supplier Id is required.", new[] { nameof(SupplierId) });
+        }
+
+        if (ExpectedDate is not null && ExpectedDate < DateTime.UtcNow)
+        {
+            yield return new ValidationResult("Expected date must be greater than current date.", new[] { nameof(ExpectedDate) });
         }
 
         if (Items is null ||  Items.Count == 0)

@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using POSystem.Application.Constants;
 using POSystem.Application.Interfaces;
 using POSystem.Domain.Entities;
@@ -64,11 +65,11 @@ public class OrderExporter : IOrderExporter
 
         worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoNoColumn).Value = order.PurchaseOrderNo;
 
-        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoDateColumn).Value = order.PlacedAtUtc.ToString(OrderExporterConfig.DateFormat);
+        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoDateColumn).Value = order.PlacedAtUtc.ToShortDateString();
 
         worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.SupplierColumn).Value = order.SupplierId;
 
-        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.ExpectedDateColumn).Value = order.ExpectedDate?.ToString(OrderExporterConfig.DateFormat);
+        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.ExpectedDateColumn).Value = order.ExpectedDate?.ToShortDateString();
     }
 
     private void WriteOrderDetail(IXLWorksheet worksheet, Order order)
