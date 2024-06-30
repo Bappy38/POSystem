@@ -13,8 +13,8 @@ public class SupplierService : ISupplierService
         _supplierRepository = supplierRepository;
     }
 
-    public async Task<List<Supplier>> GetSuppliersAsync()
+    public async Task<List<Supplier>> GetAllAsync()
     {
-        return await _supplierRepository.GetSuppliersAsync();
+        return await _supplierRepository.GetAllAsync();
     }
 }

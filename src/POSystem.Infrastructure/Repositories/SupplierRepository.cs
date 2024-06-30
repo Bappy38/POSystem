@@ -15,7 +15,7 @@ public class SupplierRepository : ISupplierRepository
         _context = context;
     }
 
-    public async Task<List<Supplier>> GetSuppliersAsync()
+    public async Task<List<Supplier>> GetAllAsync()
     {
         using (var connection = _context.CreateConnection())
         {

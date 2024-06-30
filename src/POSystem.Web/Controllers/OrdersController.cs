@@ -39,7 +39,7 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Create()
     {
-        var suppliers = await _supplierService.GetSuppliersAsync();
+        var suppliers = await _supplierService.GetAllAsync();
         var createOrderViewModel = new CreateOrderViewModel
         {
             OrderDto = new CreateOrderDto(),
@@ -55,7 +55,7 @@ public class OrdersController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var suppliers = await _supplierService.GetSuppliersAsync();
+            var suppliers = await _supplierService.GetAllAsync();
             createOrderViewModel.Suppliers = suppliers.ToDropdownOption();
 
             return View(createOrderViewModel);
@@ -89,7 +89,7 @@ public class OrdersController : Controller
         }
 
         var updateOrderDto = _mapper.Map<UpdateOrderDto>(order);
-        var suppliers = await _supplierService.GetSuppliersAsync();
+        var suppliers = await _supplierService.GetAllAsync();
 
         var updateOrderViewModel = new UpdateOrderViewModel
         {
@@ -106,7 +106,7 @@ public class OrdersController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var suppliers = await _supplierService.GetSuppliersAsync();
+            var suppliers = await _supplierService.GetAllAsync();
             updateOrderViewModel.SupplierOptions = suppliers.ToDropdownOption();
             return View(updateOrderViewModel);
         }

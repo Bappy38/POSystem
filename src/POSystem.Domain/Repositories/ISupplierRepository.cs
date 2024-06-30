@@ -4,5 +4,5 @@ namespace POSystem.Domain.Repositories;
 
 public interface ISupplierRepository
 {
-    Task<List<Supplier>> GetSuppliersAsync();
+    Task<List<Supplier>> GetAllAsync();
 }

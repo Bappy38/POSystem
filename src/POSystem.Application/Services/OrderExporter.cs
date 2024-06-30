@@ -64,18 +64,18 @@ public class OrderExporter : IOrderExporter
 
         worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoNoColumn).Value = order.PurchaseOrderNo;
 
-        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoDateColumn).Value = order.PlacedAtUtc.ToString("yyyy-mm-dd");
+        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.PoDateColumn).Value = order.PlacedAtUtc.ToString(OrderExporterConfig.DateFormat);
 
         worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.SupplierColumn).Value = order.SupplierId;
 
-        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.ExpectedDateColumn).Value = order.ExpectedDate?.ToString("yyyy-mm-dd");
+        worksheet.Cell(OrderExporterConfig.SummaryModelRow + 1, OrderExporterConfig.ExpectedDateColumn).Value = order.ExpectedDate?.ToString(OrderExporterConfig.DateFormat);
     }
 
     private void WriteOrderDetail(IXLWorksheet worksheet, Order order)
     {
         worksheet.Cell(OrderExporterConfig.DetailModelRow, OrderExporterConfig.ItemNameColumn).Value = OrderExporterConfig.ItemNameHeader;
         worksheet.Cell(OrderExporterConfig.DetailModelRow, OrderExporterConfig.ItemQuantityColumn).Value = OrderExporterConfig.ItemQuantityHeader;
-        worksheet.Cell(OrderExporterConfig.DetailModelRow, OrderExporterConfig.ItemRateColumn).Value = OrderExporterConfig.ItemQuantityHeader;
+        worksheet.Cell(OrderExporterConfig.DetailModelRow, OrderExporterConfig.ItemRateColumn).Value = OrderExporterConfig.ItemRateHeader;
 
         var offset = 1;
         foreach (var item in order.Items)

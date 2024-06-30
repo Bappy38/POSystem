@@ -8,7 +8,7 @@ namespace POSystem.Application.Services;
 
 public class OrderService : IOrderService
 {
-    private const int MAX_PAGE_SIZE = 10;
+    private const int MaxPageSize = 10;
 
     private readonly IOrderRepository _orderRepository;
     private readonly IMapper _mapper;
@@ -21,19 +21,6 @@ public class OrderService : IOrderService
         _mapper = mapper;
     }
 
-    public async Task<bool> CreateAsync(CreateOrderDto order)
-    {
-        var mappedOrder = _mapper.Map<Order>(order);
-        var numberOfAffectedRows = await _orderRepository.CreateAsync(mappedOrder);
-        return numberOfAffectedRows > 0;
-    }
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var numberOfAffectedRows = await _orderRepository.DeleteAsync(id);
-        return numberOfAffectedRows > 0;
-    }
-
     public async Task<Order> GetByIdAsync(int id)
     {
         return await _orderRepository.GetByIdAsync(id);
@@ -41,17 +28,30 @@ public class OrderService : IOrderService
 
     public async Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize)
     {
-        return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MAX_PAGE_SIZE));
+        return await _orderRepository.GetPagedAsync(cursor, Math.Min(pageSize, MaxPageSize));
     }
 
     public async Task<PaginatedList<GetOrderDto>> GetPagedAsync(int pageNo, int pageSize, string searchQuery)
     {
-        return await _orderRepository.GetPagedAsync(pageNo, Math.Min(pageSize, MAX_PAGE_SIZE), searchQuery);
+        return await _orderRepository.GetPagedAsync(pageNo, Math.Min(pageSize, MaxPageSize), searchQuery);
+    }
+
+    public async Task<bool> CreateAsync(CreateOrderDto order)
+    {
+        var mappedOrder = _mapper.Map<Order>(order);
+        var numberOfAffectedRows = await _orderRepository.CreateAsync(mappedOrder);
+        return numberOfAffectedRows > 0;
     }
 
     public async Task<bool> UpdateAsync(Order order)
     {
         var numberOfAffectedRows = await _orderRepository.UpdateAsync(order);
+        return numberOfAffectedRows > 0;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var numberOfAffectedRows = await _orderRepository.DeleteAsync(id);
         return numberOfAffectedRows > 0;
     }
 }

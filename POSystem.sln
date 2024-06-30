@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C3A7F405-8E87-4167-922F-5D7D0BF02963}"
-	ProjectSection(SolutionItems) = preProject
-		TODO.md = TODO.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.API", "src\POSystem.API\POSystem.API.csproj", "{0557B520-36C9-4538-BA1C-BBC518C37DDA}"
 EndProject
@@ -16,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.Application", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.Infrastructure", "src\POSystem.Infrastructure\POSystem.Infrastructure.csproj", "{B3AA4A06-6481-4985-9276-702532A53434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSystem.Web", "src\POSystem.Web\POSystem.Web.csproj", "{3CBD4E76-057A-43F8-A679-0B8C519972B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSystem.Web", "src\POSystem.Web\POSystem.Web.csproj", "{3CBD4E76-057A-43F8-A679-0B8C519972B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

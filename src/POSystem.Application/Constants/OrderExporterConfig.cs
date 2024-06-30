@@ -28,4 +28,6 @@ public static class OrderExporterConfig
 
     public const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public const string ExportFileName = "Orders.xlsx";
+
+    public const string DateFormat = "yyyy-mm-dd";
 }

@@ -17,7 +17,7 @@ public class SupplierController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var suppliers = await _supplierService.GetSuppliersAsync();
+        var suppliers = await _supplierService.GetAllAsync();
         return Ok(suppliers);
     }
 }

@@ -16,10 +16,92 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
+    public async Task<Order> GetByIdAsync(int id)
+    {
+        using (var connection = _context.CreateConnection())
+        {
+            connection.Open();
+
+            var orderDictionary = new Dictionary<int, Order>();
+
+            var result = await connection.QueryAsync<Order, LineItem, Order>(
+                "spGetOrderByIdWithLineItems",
+                (order, lineItem) =>
+                {
+                    if (!orderDictionary.TryGetValue(order.Id, out var orderEntry))
+                    {
+                        orderEntry = order;
+                        orderEntry.Items = new List<LineItem>();
+                        orderDictionary.Add(orderEntry.Id, orderEntry);
+                    }
+
+                    orderEntry.Items.Add(lineItem);
+
+                    return orderEntry;
+                },
+                new
+                {
+                    OrderId = id
+                },
+                splitOn: "LineItemId",
+                commandType: CommandType.StoredProcedure);
+
+            return orderDictionary.Values.FirstOrDefault();
+        }
+    }
+
+    public async Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize)
+    {
+        using (var connection = _context.CreateConnection())
+        {
+            connection.Open();
+
+            var parameters = new DynamicParameters();
+            parameters.Add("CursorId", cursor);
+            parameters.Add("PageSize", pageSize);
+
+            var orders = await connection.QueryAsync<GetOrderDto>("spGetPagedOrders", parameters, commandType: CommandType.StoredProcedure);
+            return orders?.ToList() ?? new List<GetOrderDto>();
+        }
+    }
+
+    public async Task<PaginatedList<GetOrderDto>> GetPagedAsync(int pageNo, int pageSize, string searchQuery)
+    {
+        using (var connection = _context.CreateConnection())
+        {
+            connection.Open();
+
+            var parameters = new
+            {
+                PageNo = pageNo,
+                PageSize = pageSize,
+                Search = searchQuery
+            };
+
+            using (var multi = await connection.QueryMultipleAsync("spGetOffsetPagedOrders", parameters, commandType: CommandType.StoredProcedure))
+            {
+                var orders = multi.Read<GetOrderDto>().ToList();
+                var totalItems = multi.ReadSingle<int>();
+
+                var paginatedList = new PaginatedList<GetOrderDto>
+                {
+                    Items = orders,
+                    PageIndex = pageNo,
+                    PageSize = pageSize,
+                    TotalItems = totalItems
+                };
+
+                return paginatedList;
+            }
+        }
+    }
+
     public async Task<int> CreateAsync(Order order)
     {
         using (var connection = _context.CreateConnection())
         {
+            connection.Open();
+
             var lineItemsDataTable = new DataTable();
             lineItemsDataTable.Columns.Add("Name", typeof(string));
             lineItemsDataTable.Columns.Add("Quantity", typeof(int));
@@ -44,71 +126,12 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<int> DeleteAsync(int id)
-    {
-        using (var connection = _context.CreateConnection())
-        {
-            var deleteQuery = "EXEC spDeleteOrder @OrderId";
-            var result = await connection.ExecuteAsync(deleteQuery, new { OrderId = id });
-            return result;
-        }
-    }
-
-    public async Task<Order> GetByIdAsync(int id)
-    {
-        using (var connection = _context.CreateConnection())
-        {
-            var orderDictionary = new Dictionary<int, Order>();
-
-            var result = await connection.QueryAsync<Order, LineItem, Order>(
-                "spGetOrderByIdWithLineItems",
-                (order, lineItem) =>
-                {
-                    Order orderEntry;
-
-                    if (!orderDictionary.TryGetValue(order.Id, out orderEntry))
-                    {
-                        orderEntry = order;
-                        orderEntry.Items = new List<LineItem>();
-                        orderDictionary.Add(orderEntry.Id, orderEntry);
-                    }
-
-                    if (lineItem != null)
-                    {
-                        orderEntry.Items.Add(lineItem);
-                    }
-
-                    return orderEntry;
-                },
-                new
-                {
-                    OrderId = id
-                },
-                splitOn: "LineItemId",
-                commandType: CommandType.StoredProcedure);
-
-            return orderDictionary.Values.FirstOrDefault();
-        }
-    }
-
-    public async Task<List<GetOrderDto>> GetPagedAsync(int cursor, int pageSize)
-    {
-        using (var connection = _context.CreateConnection())
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("CursorId", cursor);
-            parameters.Add("PageSize", pageSize);
-            //parameters.Add("Search", search);
-
-            var orders = await connection.QueryAsync<GetOrderDto>("spGetPagedOrders", parameters, commandType: CommandType.StoredProcedure);
-            return orders?.ToList() ?? new List<GetOrderDto>();
-        }
-    }
-
     public async Task<int> UpdateAsync(Order order)
     {
         using (var connection = _context.CreateConnection())
         {
+            connection.Open();
+
             var lineItemsDataTable = new DataTable();
             lineItemsDataTable.Columns.Add("OrderId", typeof(int));
             lineItemsDataTable.Columns.Add("Name", typeof(string));
@@ -135,32 +158,15 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<PaginatedList<GetOrderDto>>GetPagedAsync(int pageNo, int pageSize, string searchQuery)
+    public async Task<int> DeleteAsync(int id)
     {
         using (var connection = _context.CreateConnection())
         {
-            var parameters = new
-            {
-                PageNo = pageNo,
-                PageSize = pageSize,
-                Search = searchQuery
-            };
+            connection.Open();
 
-            using (var multi = await connection.QueryMultipleAsync("spGetOffsetPagedOrders", parameters, commandType: CommandType.StoredProcedure))
-            {
-                var orders = multi.Read<GetOrderDto>().ToList();
-                var totalItems = multi.ReadSingle<int>();
-
-                var paginatedList = new PaginatedList<GetOrderDto>
-                {
-                    Items = orders,
-                    PageIndex = pageNo,
-                    PageSize = pageSize,
-                    TotalItems = totalItems
-                };
-
-                return paginatedList;
-            }
+            var deleteQuery = "EXEC spDeleteOrder @OrderId";
+            var result = await connection.ExecuteAsync(deleteQuery, new { OrderId = id });
+            return result;
         }
     }
 }
